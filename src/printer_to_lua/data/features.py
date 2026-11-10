@@ -162,7 +162,7 @@ materials_features = {
     },
 }
 
-### OLD dicts
+# Feature metadata
 # main dictionary with every feature needed to print, at least for most printers.
 # default_features = {
 #     "build_area_dimensions": {
@@ -307,7 +307,7 @@ materials_features = {
 # }
 
 # # list of advanced features that are mostly rescaled values of defining features, hidden by default.
-# # Used in main.py to enable/disable their display.
+# Used by the UI to enable or disable their display.
 # advanced_features = [
 #     "enable_active_temperature_control",
 #     "filament_linear_adv_factor",
