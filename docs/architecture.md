@@ -3,21 +3,27 @@
 The application was migrated from the original root-level `main.py` in small,
 behavior-preserving phases.
 
-## Phase 2 boundaries
+## Architecture boundaries
 
 - `data/` owns feature metadata, tooltips, and shared Lua utility code.
 - `firmware/` owns firmware-specific Lua templates.
 - `firmware/registry.py` maps the numeric firmware values used by IceSL to
-  named template sets.
+  named template sets and exposes the same typed template bundle to the UI
+  editor, avoiding firmware-specific branching in the application shell.
 - `models/` contains UI-independent configuration and profile naming rules.
 - `generators/` contains pure content generation and filesystem orchestration.
 - `app.py` is the application entry point and injects `GenerationService` into
   the legacy Textual screen.
 - `ui/app.py` owns the Textual screen orchestration. `ui/components.py` owns
-  reusable presentation widgets, while `printer_to_lua/main.py` remains a
-  compatibility launcher for code that imports the old module path.
+  reusable presentation widgets, including `FeaturesTab` for the main printer
+  feature form, the parameterized `ProfileTab` for quality and material forms,
+  and `PrinterEditorTab` for firmware Lua editors. `printer_to_lua/main.py`
+  remains a compatibility launcher for code that imports the old module path.
 - `ui/state.py` owns the conditional projection of printer settings into
   firmware editor sections.
+- `ui/controller.py` owns deterministic UI coordination policies such as
+  firmware editor selection and quality/material defaults; it does not depend
+  on Textual widgets.
 - `ui/adapter.py` snapshots Textual controls into `PrinterConfig`; generation
   actions do not directly assemble Lua or open files.
 
@@ -25,6 +31,9 @@ The screen's data-driven layout remains in `ui/app.py`, while generated output
 is represented by the reusable `GeneratedOutput` component. Its imports
 resolve through package-owned data and firmware modules; the removed root
 `dicts` package is no longer part of the application.
+The remaining app methods are deliberately limited to Textual widget
+coordination and event dispatch; deterministic policy calculations live in
+`ui/controller.py`.
 
 ## Generation flow
 

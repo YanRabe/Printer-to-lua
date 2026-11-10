@@ -56,3 +56,23 @@ python -m build
 ```
 
 The wheel includes the Textual stylesheet from `src/printer_to_lua/assets/`.
+
+The quality and material forms share the `ProfileTab` component in
+`src/printer_to_lua/ui/components.py`. Preserve the existing widget IDs when
+extending these forms because the adapter and event handlers use those IDs as
+their UI-to-domain contract.
+
+The main printer feature form is provided by the `FeaturesTab` component in
+the same module. It owns the data-driven feature controls and preserves the
+existing IDs used by the adapter and application event handlers.
+
+Deterministic event coordination is kept in `ui/controller.py`. Profile
+defaults and firmware template selection belong there; Textual handlers apply
+the returned values to widgets and remain responsible for rendering.
+Derived speed, acceleration, and junction-deviation values use the same
+controller boundary.
+
+The firmware variable and Lua editor surface is provided by the
+`PrinterEditorTab` component in the same module. Firmware switching remains
+owned by the application event handler; the component receives the current
+template values when it is composed.

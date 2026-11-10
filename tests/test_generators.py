@@ -7,6 +7,7 @@ from printer_to_lua.data.features import (
 )
 from printer_to_lua.generators.features import generate_features
 from printer_to_lua.generators.materials import generate_profile
+from printer_to_lua.firmware.registry import firmware_ui_templates
 from printer_to_lua.models.printer import PrinterConfig
 
 
@@ -51,3 +52,11 @@ def test_disabled_features_are_emitted_as_lua_comments():
     )
 
     assert "--bed_size_z_mm = 340" in output
+
+
+def test_firmware_ui_registry_exposes_editor_templates():
+    for firmware in range(3):
+        templates = firmware_ui_templates(firmware)
+        assert templates.header
+        assert templates.footer
+        assert templates.functions

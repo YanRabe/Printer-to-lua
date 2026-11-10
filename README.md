@@ -71,12 +71,13 @@ src/printer_to_lua/
 ├── firmware/      Marlin, RepRapFirmware, and Klipper templates
 ├── generators/    Pure Lua generation and filesystem orchestration
 ├── models/        UI-independent configuration models
-└── ui/            Textual application, adapters, state, and components
+└── ui/            Textual application, controller, adapters, state, and components
 ```
 
-The UI adapter converts widget state into `PrinterConfig`; generators do not
-depend on Textual. This keeps profile generation testable without launching
-the terminal application.
+The UI controller owns deterministic defaults and derived values, while the
+adapter converts widget state into `PrinterConfig`. Generators do not depend
+on Textual, keeping profile generation testable without launching the terminal
+application.
 
 ## Documentation
 
